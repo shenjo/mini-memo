@@ -11,6 +11,12 @@
     "name": "shenjo",
     "email": "610851260@qq.com"
   },
+  "keywords": [
+    "memorandum",
+    "memo",
+    "open folder",
+    "keep time"
+  ],
   "bin": "src/main.js",
   "license": "MIT"
 }
