@@ -5,5 +5,6 @@
   "main": "src/main.js",
   "repository": "https://github.com/shenjo/mini-memo.git",
   "author": "610851260@qq.com",
+  "bin":"src/main.js",
   "license": "MIT"
 }

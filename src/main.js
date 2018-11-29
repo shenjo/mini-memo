@@ -5,7 +5,7 @@ const {exec} = require('child_process');
 // const ALL_PLATFORM = ['aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'];
 
 const DEFAULT_FOLDER = {
-    HOST: () => {
+    host: () => {
         const platform = os.platform();
         if (platform === 'win32') {
             return 'c://windows/system32/drivers/etc';
@@ -37,22 +37,25 @@ const DEFAULT_COMMAND = {
 
 function openFolder(path) {
     if (path) {
-        exec(`${DEFAULT_COMMAND.OPEN()} "${path}"`);
+        const oper = DEFAULT_COMMAND.OPEN()
+        console.log(`${oper} "${path}"`);
+        exec(`${oper} "${path}"`);
     }
 }
 
 
-openFolder(DEFAULT_FOLDER.HOST());
 
-function entry() {
-    const argv = process.argv.slice(2);
-    if (argv[0]) {
-        console.log(`process argv is ${process.argv}`);
-        openFolder(DEFAULT_COMMAND.OPEN());
-    } else {
-        console.error('Specify path should be given.')
-    }
+
+function entry(path) {
+    openFolder(path);
 }
+const userInputCommands = process.argv.slice(2);
+console.log(userInputCommands);
+if (userInputCommands.length > 0) {
+    const path = userInputCommands[0];
+    openFolder(DEFAULT_FOLDER[path]());
+}
+
 
 module.exports = {
     entry
