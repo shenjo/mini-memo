@@ -1,0 +1,9 @@
+{
+  "name": "smemo",
+  "version": "1.0.0",
+  "description": "a mini memorandum ",
+  "main": "src/main.js",
+  "repository": "https://github.com/shenjo/mini-memo.git",
+  "author": "610851260@qq.com",
+  "license": "MIT"
+}
