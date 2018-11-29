@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // const dns  = require('dns');
 const os = require('os');
 const {exec} = require('child_process');
@@ -38,22 +40,21 @@ const DEFAULT_COMMAND = {
 function openFolder(path) {
     if (path) {
         const oper = DEFAULT_COMMAND.OPEN()
-        console.log(`${oper} "${path}"`);
         exec(`${oper} "${path}"`);
     }
 }
-
-
 
 
 function entry(path) {
     openFolder(path);
 }
 const userInputCommands = process.argv.slice(2);
-console.log(userInputCommands);
 if (userInputCommands.length > 0) {
     const path = userInputCommands[0];
     openFolder(DEFAULT_FOLDER[path]());
+}else{
+   console.log('command not given.')
+   console.log('current support list are ["host"]')
 }
 
 
