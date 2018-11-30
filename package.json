@@ -1,6 +1,6 @@
 {
   "name": "smemo",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "a mini memorandum ",
   "main": "src/main.js",
   "engines": {
@@ -15,7 +15,7 @@
     "memorandum",
     "memo",
     "open folder",
-    "keep time"
+    "save time"
   ],
   "bin": "src/main.js",
   "license": "MIT"
