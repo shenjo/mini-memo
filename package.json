@@ -4,7 +4,7 @@
   "description": "a mini memorandum ",
   "main": "src/main.js",
   "engines": {
-    "node": ">6.11.0"
+    "node": ">10.0.0"
   },
   "repository": "https://github.com/shenjo/mini-memo.git",
   "author": {
@@ -15,7 +15,10 @@
     "memorandum",
     "memo",
     "open folder",
-    "save time"
+    "save time",
+    "notes",
+    "open folder",
+    "useful link"
   ],
   "bin": "src/main.js",
   "license": "MIT"
