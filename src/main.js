@@ -83,9 +83,6 @@ async function startCheckFileSize(path) {
 	});
 }
 
-fs.stat('/Users/shenhuan/githome', (err, info) => {
-	console.log((info.size / 1024).toFixed(2) + 'kb')
-});
 const userInputCommands = process.argv.slice(2);
 if (userInputCommands.length > 0) {
 	const command = userInputCommands[0];

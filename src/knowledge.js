@@ -1,8 +1,9 @@
 
 const {getNpmKnowledgeIndexs} = require('./knowledges/npmReleated');
+const {oftenUsedCodes} = require('./knowledges/codes');
 
 
-const allKnowledge = {...getNpmKnowledgeIndexs()};
+const allKnowledge = {...getNpmKnowledgeIndexs(),...oftenUsedCodes()};
 
 module.exports = {
     knowledge: allKnowledge,
