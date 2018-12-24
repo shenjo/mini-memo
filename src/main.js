@@ -6,6 +6,17 @@ const fs = require('fs');
 const fsPromises = fs.promises;
 const {exec} = require('child_process');
 const {knowledge, commands} = require('./knowledge');
+const {defaultHandler, TYPES, compose, getCommandStr} = require('./utils/index')
+
+const arrProto = Array.prototype;
+if (typeof arrProto.flat !== 'function') {
+	arrProto.flat = function () {
+		return this.reduce((prev, curr) => {
+			Array.isArray(curr) ? prev = prev.concat(curr) : prev.push(curr);
+			return prev;
+		}, [])
+	}
+}
 
 
 // const ALL_PLATFORM = ['aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32'];
@@ -39,8 +50,7 @@ const DEFAULT_COMMAND = {
 
 function openFolder(path) {
 	if (path) {
-		const oper = DEFAULT_COMMAND.OPEN()
-		exec(`${oper} "${path}"`);
+		exec(getCommandStr(path));
 	}
 }
 
@@ -83,17 +93,10 @@ async function startCheckFileSize(path) {
 	});
 }
 
+const start = compose(execFn, parseUserInput);
 const userInputCommands = process.argv.slice(2);
 if (userInputCommands.length > 0) {
-	const command = userInputCommands[0];
-	if (commands.findIndex(item => item === command) > -1) {
-		console.log(knowledge[command])
-	} else if (DEFAULT_FOLDER[command]) {
-		openFolder(DEFAULT_FOLDER[command]());
-	} else {
-		console.log(`command ${command} not found.`)
-	}
-
+	start(...userInputCommands);
 } else {
 	console.log('command not given.');
 	console.log(`current support list are [host,${commands.toString()}]`)
@@ -101,7 +104,45 @@ if (userInputCommands.length > 0) {
 }
 
 
+function parseUserInput(...userInputCommands) {
+	let result = '';
+	const command = userInputCommands[0];
+	const isDirective = commands.findIndex(item => item === command) > -1;
+	const isOpenCommand = !isDirective && DEFAULT_FOLDER[command];
+	if (isDirective) {
+		let detail = knowledge[command];
+		if (typeof detail === 'object') {
+			result = (detail.handler || defaultHandler).call(null, userInputCommands.slice(1), detail.content);
+		} else if (typeof detail === 'string') {
+			result = defaultHandler(detail);
+		}
+	}
+	if (isOpenCommand) {
+		result = {type: TYPES.exec, content: getCommandStr(DEFAULT_FOLDER[command]())};
+	}
+	return result;
+}
+
+function execFn(command) {
+	if (command.type === TYPES.exec) {
+		console.log('current command is ', command.content);
+		exec(`${command.content}`);
+	} else if (command.type === TYPES.console) {
+		console.log(command.content);
+	} else {
+		console.log('not support command')
+	}
+}
+
+
+// ['host','registry','compose','curry','dy','v2','xiami'].forEach(item=>{
+// 	console.log(`${item} : ${parseUserInput(item)}`);
+// })
+
+// start('xiami');
+
 module.exports = {
 	entry,
+	start,
 	startCheckFileSize
 };
